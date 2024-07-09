@@ -31,3 +31,8 @@ body {
     text-wrap: balance;
   }
 }
+
+.title-page {
+  font-size: 400%;
+  font-weight: 800;
+}
