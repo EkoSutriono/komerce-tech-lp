@@ -1,18 +1,100 @@
+"use client";
+
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Under Development by&nbsp;
-          <code className="font-mono font-bold">Komerce Tech Team</code>
-        </p>
-      </div>
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { TextPlugin, ScrollTrigger } from "gsap/all";
+import Grow from './components/grow'
+import Members from './components/members'
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <span className="title-page">KOMERCE TECH</span>
+export default function Home() {
+  const textRef = useRef(null);
+  const imgRef = useRef(null);
+  const mainRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(TextPlugin, ScrollTrigger)
+
+    gsap.to(textRef.current, {
+      duration: 2,
+      text: "Komerce Tech",
+    });
+
+    gsap.fromTo(
+      imgRef.current,
+      { x: 0 },
+      {
+        x: 200,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 10%',
+          end: 'bottom 90%',
+          scrub: true,
+        },
+      }
+    )
+
+    gsap.fromTo(
+      imgRef.current,
+      { scale: 1 },
+      {
+        scale: 10,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'bottom 70%',
+          end: 'bottom 20%',
+          scrub: true,
+        },
+      }
+    )
+
+    gsap.fromTo(
+      textRef.current,
+      { x: 0, opacity: 1 },
+      {
+        x: 700,
+        opacity: 0,
+        duration: 2,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 10%',
+          end: 'bottom center',
+          scrub: true,
+        },
+      }
+    )
+    
+    gsap.to(
+      mainRef.current,
+      {
+        background: 'blue',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'bottom 50%',
+          end: 'bottom 30%',
+          scrub: true
+        },
+      }
+    )
+  }, []);
+
+  return (
+    <main className="flex min-h-[1200px] flex-col items-center justify-center px-24 pt-12  overflow-hidden" ref={mainRef}>
+      <div className="relative z-[-1] w-screen min-h-screen flex place-items-center" ref={containerRef}>
+        <div className="items-center top-[150px] fixed w-screen pl-[0] pr-[200px]">
+          <div className="flex justify-center items-center overflow-hidden">
+            <Image ref={imgRef} alt="Code" width={300} height={300} src='https://storage.googleapis.com/komerce/assets/icons/icon-dev-white.svg'></Image>
+            <span className="title-page" ref={textRef}>
+              KBVGFRuJ SnAR
+            </span>
+          </div>
+        </div>
       </div>
+      <div className="space h-[200px]"></div>
+      <Grow />
+      <Members />
     </main>
   );
 }
